@@ -1,0 +1,47 @@
+import type { Coupon } from '@/types'
+
+export const coupons: Coupon[] = [
+  {
+    id: 'c1',
+    code: 'WELCOME10',
+    discountType: 'percentage',
+    discountValue: 10,
+    startDate: '2024-01-01',
+    endDate: '2025-12-31',
+    status: 'active',
+    usageCount: 842,
+    maxUsage: 5000,
+  },
+  {
+    id: 'c2',
+    code: 'SAVE15',
+    discountType: 'fixed',
+    discountValue: 150,
+    startDate: '2024-06-01',
+    endDate: '2025-06-30',
+    status: 'active',
+    usageCount: 456,
+    maxUsage: 2000,
+  },
+  {
+    id: 'c3',
+    code: 'NMSKINS20',
+    discountType: 'percentage',
+    discountValue: 20,
+    startDate: '2024-11-01',
+    endDate: '2025-01-31',
+    status: 'active',
+    usageCount: 1289,
+    maxUsage: 3000,
+  },
+  {
+    id: 'c4',
+    code: 'FLAT99',
+    discountType: 'fixed',
+    discountValue: 99,
+    startDate: '2024-03-01',
+    endDate: '2024-12-31',
+    status: 'disabled',
+    usageCount: 2103,
+  },
+]
