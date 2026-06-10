@@ -40,41 +40,42 @@ export interface Device {
 }
 
 export interface Product {
-  id: string;
-  name: string;
-  sku: string;
-  description: string;
-  price: number;
-  categoryId: string;
-  categoryName: string;
-  subcategoryId?: string;
-  variant?: string;
-  stock: number;
-  status: 'active' | 'inactive';
-  image: string;
-  tags: string[];
-  compatibleDeviceIds: string[];
-  createdAt: string;
+  id: string
+  name: string
+  sku: string
+  description: string
+  price: number
+  categoryId: string
+  categoryName: string
+  subcategoryId?: string
+  variant?: string
+  stock: number
+  status: 'active' | 'inactive'
+  image: string
+  tags: string[]
+  compatibleDeviceIds: string[]
+  createdAt: string
 }
 
 export interface Subcategory {
-  id: string;
-  name: string;
-  description?: string;
-  variants?: Variant[];
-  productCount?: number;
-  status: 'active' | 'inactive';
-  createdAt: string;
+  id: string
+  name: string
+  description?: string
+  variants?: Variant[]
+  productCount?: number
+  status: 'active' | 'inactive'
+  createdAt: string
 }
 
 export interface Category {
-  id: string;
-  name: string;
-  description: string;
-  productCount?: number;
-  subcategories: Subcategory[];
-  status: 'active' | 'inactive';
-  createdAt: string;
+  id: string
+  name: string
+  description: string
+  image: string
+  productCount?: number
+  subcategories: Subcategory[]
+  status: 'active' | 'inactive'
+  createdAt: string
 }
 
 export interface OrderItem {
@@ -291,15 +292,15 @@ export interface AuthResponse {
   token: string
 }
 
-export type SortDirection = 'asc' | 'desc';
+export type SortDirection = 'asc' | 'desc'
 
-export type Variant = string; // simple variant name
+export type Variant = string // simple variant name
 
 export interface DeviceModel {
-  id: string;
-  brand: string;
-  model: string;
-  deviceType: DeviceType;
-  status: 'active' | 'inactive';
-  createdAt: string;
+  id: string
+  brand: string
+  model: string
+  deviceType: DeviceType
+  status: 'active' | 'inactive'
+  createdAt: string
 }
