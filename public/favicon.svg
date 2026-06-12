@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <rect width="32" height="32" rx="8" fill="#0D0D0D"/>
+  <rect x="0.5" y="0.5" width="31" height="31" rx="7.5" stroke="#FC7309" stroke-opacity="0.4"/>
+  <text x="4" y="23" fill="#FC7309" font-family="Inter,sans-serif" font-weight="800" font-size="16">N</text>
+  <text x="16" y="23" fill="#FFFFFF" font-family="Inter,sans-serif" font-weight="800" font-size="16">M</text>
+</svg>
