@@ -3,7 +3,14 @@ import { Breadcrumb } from '@/components/ui/Breadcrumb'
 import { Card } from '@/components/ui/Card'
 import { categoryService } from '@/services/categoryService'
 import type { Category } from '@/types'
-import { Pencil } from 'lucide-react'
+import {
+  Pencil,
+  FolderOpen,
+  FileText,
+  Upload,
+  CircleDot,
+  FolderTree,
+} from 'lucide-react'
 
 export default function Categories() {
   const [categories, setCategories] = useState<Category[]>([])
@@ -105,6 +112,10 @@ export default function Categories() {
 
     const updated = await categoryService.getAll()
     setCategories(updated)
+
+    setShowEditCategory(false)
+
+    setEditingCategory(null)
   }
   const handleEditClick = (category: Category) => {
     setEditingCategory(category)
@@ -154,7 +165,7 @@ export default function Categories() {
       <Breadcrumb items={[{ label: 'Categories' }]} />
 
       <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
-        <Card>
+        <Card className='transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/10'>
           <div className='p-6'>
             <p className='text-sm text-text-secondary'>Total Categories</p>
             <h2 className='text-3xl font-bold text-text'>
@@ -163,7 +174,7 @@ export default function Categories() {
           </div>
         </Card>
 
-        <Card>
+        <Card className='transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/10'>
           <div className='p-6'>
             <p className='text-sm text-text-secondary'>Active Categories</p>
             <h2 className='text-3xl font-bold text-green-500'>
@@ -175,7 +186,7 @@ export default function Categories() {
           </div>
         </Card>
 
-        <Card>
+        <Card className='transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/10'>
           <div className='p-6'>
             <p className='text-sm text-text-secondary'>Total Subcategories</p>
             <h2 className='text-3xl font-bold text-primary'>
@@ -309,51 +320,91 @@ export default function Categories() {
       </Card>
       {showEditCategory && editingCategory && (
         <div className='fixed inset-0 bg-black/60 flex items-center justify-center z-50'>
-          <div className='bg-card border border-border rounded-xl p-6 w-full max-w-md'>
-            <h2 className='text-xl font-semibold mb-4'>Edit Category</h2>
+          <div className='bg-card border border-border rounded-xl p-6 w-full max-w-xl animate-[fadeIn_.25s_ease-out]'>
+            <div className='flex items-center gap-3 mb-6'>
+              <Pencil size={20} className='text-primary' />
 
+              <h2 className='text-2xl font-semibold text-text'>
+                Edit Category
+              </h2>
+            </div>
             <div className='space-y-4'>
-              <input
-                type='text'
-                value={editForm.name}
-                onChange={(e) =>
-                  setEditForm({
-                    ...editForm,
-                    name: e.target.value,
-                  })
-                }
-                className='w-full px-4 py-2 rounded-lg border border-border'
-              />
+              <div>
+                <label className='flex items-center gap-2 text-sm font-semibold text-primary mb-2'>
+                  <FolderOpen size={16} />
+                  Category Name
+                </label>
 
-              <input
-                type='text'
-                value={editForm.description}
-                onChange={(e) =>
-                  setEditForm({
-                    ...editForm,
-                    description: e.target.value,
-                  })
-                }
-                className='w-full px-4 py-2 rounded-lg border border-border'
-              />
+                <input
+                  type='text'
+                  value={editForm.name}
+                  onChange={(e) =>
+                    setEditForm({
+                      ...editForm,
+                      name: e.target.value,
+                    })
+                  }
+                  className='w-full px-4 py-2 rounded-lg border border-border'
+                />
+              </div>
+              <div>
+                <label className='flex items-center gap-2 text-sm font-semibold text-primary mb-2'>
+                  <FileText size={16} />
+                  Description
+                </label>
 
-              <input
-                type='text'
-                value={editForm.image}
-                onChange={(e) =>
-                  setEditForm({
-                    ...editForm,
-                    image: e.target.value,
-                  })
-                }
-                className='w-full px-4 py-2 rounded-lg border border-border'
-              />
+                <input
+                  type='text'
+                  value={editForm.description}
+                  onChange={(e) =>
+                    setEditForm({
+                      ...editForm,
+                      description: e.target.value,
+                    })
+                  }
+                  className='w-full px-4 py-2 rounded-lg border border-border'
+                />
+              </div>
+              <div>
+                <label className='flex items-center gap-2 text-sm font-semibold text-primary mb-2'>
+                  <Upload size={16} />
+                  Category Image
+                </label>
+
+                <input
+                  type='file'
+                  accept='image/*'
+                  onChange={(e) => {
+                    const file = e.target.files?.[0]
+
+                    if (!file) return
+
+                    const imageUrl = URL.createObjectURL(file)
+
+                    setEditForm({
+                      ...editForm,
+                      image: imageUrl,
+                    })
+                  }}
+                  className='w-full px-4 py-2 border border-border rounded-lg'
+                />
+
+                {editForm.image && (
+                  <div className='flex justify-center mt-4'>
+                    <img
+                      src={editForm.image}
+                      alt='Preview'
+                      className='w-28 h-28 object-cover rounded-xl border border-border'
+                    />
+                  </div>
+                )}
+              </div>
             </div>
 
             <div className='flex justify-between mt-6'>
               <button
                 onClick={() => handleDeleteCategory(editingCategory.id)}
-                className='px-4 py-2 bg-red-500 text-white rounded-lg'
+                className='px-5 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors'
               >
                 Delete
               </button>
@@ -368,7 +419,7 @@ export default function Categories() {
 
                 <button
                   onClick={handleUpdateCategory}
-                  className='px-4 py-2 bg-primary text-white rounded-lg'
+                  className='px-5 py-2 bg-primary text-white rounded-lg hover:opacity-90 transition-all'
                 >
                   Save
                 </button>
@@ -379,41 +430,60 @@ export default function Categories() {
       )}
       {showAddCategory && (
         <div className='fixed inset-0 bg-black/60 flex items-center justify-center z-50'>
-          <div className='bg-card border border-border rounded-xl p-6 w-full max-w-md'>
-            <h2 className='text-xl font-semibold text-text mb-4'>
-              Add Category
-            </h2>
+          <div className='bg-card border border-border rounded-xl p-6 w-full max-w-md modal-animation'>
+            <div className='flex items-center gap-3 mb-6'>
+              <Pencil size={20} className='text-primary' />
+
+              <h2 className='text-2xl font-semibold text-text'>Add Category</h2>
+            </div>
 
             <div className='space-y-4'>
-              <input
-                type='text'
-                placeholder='Category Name'
-                value={newCategory.name}
-                onChange={(e) =>
-                  setNewCategory({
-                    ...newCategory,
-                    name: e.target.value,
-                  })
-                }
-                className='w-full px-4 py-2 rounded-lg border border-border bg-background text-text'
-              />
+              <div>
+                <label className='flex items-center gap-2 text-sm font-semibold text-primary mb-2'>
+                  <FolderOpen size={16} />
+                  Category Name
+                </label>
 
-              <input
-                type='text'
-                placeholder='Description'
-                value={newCategory.description}
-                onChange={(e) =>
-                  setNewCategory({
-                    ...newCategory,
-                    description: e.target.value,
-                  })
-                }
-                className='w-full px-4 py-2 rounded-lg border border-border bg-background text-text'
-              />
+                <input
+                  type='text'
+                  placeholder='Category Name'
+                  value={newCategory.name}
+                  onChange={(e) =>
+                    setNewCategory({
+                      ...newCategory,
+                      name: e.target.value,
+                    })
+                  }
+                  className='w-full px-4 py-2 rounded-lg border border-border bg-background text-text'
+                />
+              </div>
+
+              <div>
+                <div>
+                  <label className='flex items-center gap-2 text-sm font-semibold text-primary mb-2'>
+                    <FileText size={16} />
+                    Description
+                  </label>
+
+                  <input
+                    type='text'
+                    placeholder='Description'
+                    value={newCategory.description}
+                    onChange={(e) =>
+                      setNewCategory({
+                        ...newCategory,
+                        description: e.target.value,
+                      })
+                    }
+                    className='w-full px-4 py-2 rounded-lg border border-border bg-background text-text'
+                  />
+                </div>
+              </div>
 
               <div className='space-y-4'>
                 <div>
-                  <label className='block text-sm font-medium text-text mb-2'>
+                  <label className='flex items-center gap-2 text-sm font-semibold text-primary mb-2'>
+                    <CircleDot size={16} />
                     Status
                   </label>
 
@@ -433,7 +503,8 @@ export default function Categories() {
                 </div>
 
                 <div>
-                  <label className='block text-sm font-medium text-text mb-2'>
+                  <label className='flex items-center gap-2 text-sm font-semibold text-primary mb-2'>
+                    <Upload size={16} />
                     Category Image
                   </label>
 
@@ -455,11 +526,13 @@ export default function Categories() {
                     className='w-full px-4 py-2 border border-border rounded-lg'
                   />
                   {newCategory.image && (
-                    <img
-                      src={newCategory.image}
-                      alt='Preview'
-                      className='w-full h-40 object-cover rounded-lg border border-border'
-                    />
+                    <div className='flex justify-center mt-4'>
+                      <img
+                        src={newCategory.image}
+                        alt='Preview'
+                        className='w-28 h-28 object-cover rounded-xl border border-border'
+                      />
+                    </div>
                   )}
                 </div>
               </div>
@@ -485,60 +558,113 @@ export default function Categories() {
       )}
       {showAddSubcategory && (
         <div className='fixed inset-0 bg-black/60 flex items-center justify-center z-50'>
-          <div className='bg-card border border-border rounded-xl p-6 w-full max-w-md'>
-            <h2 className='text-xl font-semibold mb-4'>Add Subcategory</h2>
+          <div className='bg-card border border-border rounded-xl p-6 w-full max-w-md modal-animation'>
+            <div className='flex items-center gap-3 mb-6'>
+              <FolderTree size={20} className='text-primary' />
 
-            <div className='space-y-4'>
-              <select
-                value={newSubcategory.categoryId}
-                onChange={(e) =>
-                  setNewSubcategory({
-                    ...newSubcategory,
-                    categoryId: e.target.value,
-                  })
-                }
-                className='w-full px-4 py-2 rounded-lg border border-border'
-              >
-                <option value=''>Select Category</option>
-
-                {categories.map((category) => (
-                  <option key={category.id} value={category.id}>
-                    {category.name}
-                  </option>
-                ))}
-              </select>
-
-              <input
-                type='text'
-                placeholder='Subcategory Name'
-                value={newSubcategory.name}
-                onChange={(e) =>
-                  setNewSubcategory({
-                    ...newSubcategory,
-                    name: e.target.value,
-                  })
-                }
-                className='w-full px-4 py-2 rounded-lg border border-border'
-              />
-
-              <textarea
-                placeholder='Description'
-                rows={3}
-                value={newSubcategory.description}
-                onChange={(e) =>
-                  setNewSubcategory({
-                    ...newSubcategory,
-                    description: e.target.value,
-                  })
-                }
-                className='w-full px-4 py-2 rounded-lg border border-border'
-              />
+              <h2 className='text-2xl font-semibold text-text'>
+                Add Subcategory
+              </h2>
             </div>
 
+            <div className='space-y-5'>
+              <div>
+                <label className='flex items-center gap-2 text-sm font-semibold text-primary mb-2'>
+                  <Upload size={16} />
+                  Category Image
+                </label>
+
+                <select
+                  value={newSubcategory.categoryId}
+                  onChange={(e) =>
+                    setNewSubcategory({
+                      ...newSubcategory,
+                      categoryId: e.target.value,
+                    })
+                  }
+                  className='w-full px-4 py-3 rounded-xl border border-border bg-background text-text'
+                >
+                  <option value=''>Select Category</option>
+
+                  {categories.map((category) => (
+                    <option key={category.id} value={category.id}>
+                      {category.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className='block text-sm font-semibold text-primary mb-2'>
+                  <div className='flex items-center gap-2'>
+                    <FolderOpen size={16} className='text-primary' />
+                    Subcategory Name
+                  </div>
+                </label>
+
+                <input
+                  type='text'
+                  placeholder='Subcategory Name'
+                  value={newSubcategory.name}
+                  onChange={(e) =>
+                    setNewSubcategory({
+                      ...newSubcategory,
+                      name: e.target.value,
+                    })
+                  }
+                  className='w-full px-4 py-3 rounded-xl border border-border bg-background text-text'
+                />
+              </div>
+
+              <div>
+                <label className='block text-sm font-semibold text-primary mb-2'>
+                  <div className='flex items-center gap-2'>
+                    <FileText size={16} className='text-primary' />
+                    Description
+                  </div>
+                </label>
+
+                <textarea
+                  rows={3}
+                  placeholder='Description'
+                  value={newSubcategory.description}
+                  onChange={(e) =>
+                    setNewSubcategory({
+                      ...newSubcategory,
+                      description: e.target.value,
+                    })
+                  }
+                  className='w-full px-4 py-3 rounded-xl border border-border bg-background text-text resize-none'
+                />
+              </div>
+
+              <div>
+                <label className='block text-sm font-semibold text-primary mb-2'>
+                  <div className='flex items-center gap-2'>
+                    <CircleDot size={16} className='text-primary' />
+                    Status
+                  </div>
+                </label>
+
+                <select
+                  value={newSubcategory.status}
+                  onChange={(e) =>
+                    setNewSubcategory({
+                      ...newSubcategory,
+                      status: e.target.value,
+                    })
+                  }
+                  className='w-full px-4 py-3 rounded-xl border border-border bg-background text-text'
+                >
+                  <option value='active'>Active</option>
+                  <option value='inactive'>Inactive</option>
+                </select>
+              </div>
+            </div>
             <div className='flex justify-end gap-2 mt-6'>
               <button
                 onClick={() => setShowAddSubcategory(false)}
-                className='px-4 py-2 border border-border rounded-lg'
+                className='px-5 py-2 border border-border rounded-lg hover:bg-background transition-colors'
               >
                 Cancel
               </button>
