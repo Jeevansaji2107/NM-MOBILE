@@ -91,18 +91,32 @@ export default function Dashboard() {
         new Date(a.lastOrderDate).getTime(),
     )
     .slice(0, 5)
+  const now = new Date()
+
+  const currentDate = now.toLocaleDateString('en-IN', {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  })
+
+  const currentTime = now.toLocaleTimeString('en-IN', {
+    hour: '2-digit',
+    minute: '2-digit',
+  })
 
   return (
     <div className='space-y-6'>
       <div className='w-full flex'>
         <div className='w-full flex'>
           <div>
-            <h2 className='text-2xl font-bold text-text'>
-              Dashboard Analytics
-            </h2>
-            <p className='text-sm text-text-secondary mt-1'>
-              Track revenue, orders, products and customer activity
-            </p>
+            <div>
+              <h2 className='text-2xl font-bold text-text'>{currentDate}</h2>
+
+              <p className='text-lg text-primary font-medium mt-1'>
+                {currentTime}
+              </p>
+            </div>
           </div>
 
           <div className='ml-auto w-40'>

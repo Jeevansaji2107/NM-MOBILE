@@ -1,4 +1,5 @@
 import { forwardRef, useId, type SelectHTMLAttributes } from 'react'
+import { ChevronDown } from 'lucide-react'
 
 interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   label?: string
@@ -13,7 +14,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
     const errorId = error ? `${selectId}-error` : undefined
 
     return (
-      <div className='ml-auto'>
+      <div className='ml-auto relative'>
         {label && (
           <label
             htmlFor={selectId}
@@ -36,6 +37,9 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
             </option>
           ))}
         </select>
+        <div className='absolute inset-y-0 right-4 flex items-center pointer-events-none'>
+          <ChevronDown size={18} className='text-text-secondary' />
+        </div>
         {error && (
           <p id={errorId} className='mt-1.5 text-sm text-red-400' role='alert'>
             {error}

@@ -12,7 +12,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     const errorId = error ? `${inputId}-error` : undefined
 
     return (
-  <div className='relative ml-auto'>
+      <div className="w-full">
         {label && (
           <label htmlFor={inputId} className="block text-sm font-medium text-text-secondary mb-2">
             {label}
@@ -23,7 +23,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           id={inputId}
           aria-invalid={error ? true : undefined}
           aria-describedby={errorId}
-          className={`min-w-[160px] pl-10 pr-8 py-2 bg-card border border-primary/30 rounded-lg text-text focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/30 transition-all duration-200 appearance-none cursor-pointer ${error ? 'border-red-500' : ''} ${className}`}
+          className={`w-full px-4 py-2.5 bg-background border border-border rounded-lg text-text placeholder:text-text-secondary/50 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/30 transition-all duration-200 ${error ? 'border-red-500' : ''} ${className}`}
           {...props}
         />
         {error && (
